@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textfield.TextInputLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/textInputLayoutPostcode"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:hintEnabled="false">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editTextPostcode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:drawableEnd="@drawable/ic_arrow_forward"
+        android:text="@string/empty"
+        android:hint="@string/postcode_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="number|text"
+        android:maxLength="5"
+        android:textColorHint="@android:color/darker_gray" />
+</com.google.android.material.textfield.TextInputLayout>
