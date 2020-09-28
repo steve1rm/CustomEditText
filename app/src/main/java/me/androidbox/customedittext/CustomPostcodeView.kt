@@ -3,7 +3,9 @@ package me.androidbox.customedittext
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import androidx.annotation.NonNull
+import androidx.core.view.isVisible
 import arrow.core.Either
 import arrow.core.EitherOf
 import com.google.android.material.textfield.TextInputEditText
@@ -21,6 +23,7 @@ class CustomPostcodeView @JvmOverloads constructor(context: Context, attributeSe
 
     private lateinit var editTextPostcode: TextInputEditText
     private lateinit var textInputLayout: TextInputLayout
+    private lateinit var imageViewArrow: ImageView
 
     init {
         if(!isInEditMode) {
@@ -28,10 +31,15 @@ class CustomPostcodeView @JvmOverloads constructor(context: Context, attributeSe
 
             editTextPostcode = view.findViewById(R.id.editTextPostcode)
             textInputLayout = view.findViewById(R.id.textInputLayoutPostcode)
+            imageViewArrow = view.findViewById(R.id.imageViewArrow)
+            imageViewArrow.visibility = View.VISIBLE
 
             editTextPostcode.setText(context.getString(R.string.empty))
             textInputLayout.error = null
 
+            imageViewArrow.setOnClickListener {
+                println("Image has been pressed")
+            }
         }
     }
 
@@ -41,9 +49,12 @@ class CustomPostcodeView @JvmOverloads constructor(context: Context, attributeSe
                 if(it) {
                     println("The validation worked")
                     result(Either.right(editTextPostcode.text.toString()))
+                    imageViewArrow.visibility = View.VISIBLE
                 }
                 else {
                     result(Either.left("Failed to get postcode"))
+                    imageViewArrow.visibility = View.GONE
+
                 }
             }.addTo(compositeDisposable)
     }
