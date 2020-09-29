@@ -27,6 +27,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.customPostcode.setImageListener {
+            println("Fetch delivery details from location")
+        }
     }
 
     override fun onDestroy() {

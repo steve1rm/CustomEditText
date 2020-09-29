@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.NonNull
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import arrow.core.Either
 import arrow.core.EitherOf
@@ -19,11 +20,12 @@ import ru.whalemare.rxvalidator.RxCombineValidator
 import ru.whalemare.rxvalidator.RxValidator
 
 class CustomPostcodeView @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0)
-    : TextInputLayout(context, attributeSet, defStyleAttr) {
+    : ConstraintLayout(context, attributeSet, defStyleAttr) {
 
     private lateinit var editTextPostcode: TextInputEditText
     private lateinit var textInputLayout: TextInputLayout
     private lateinit var imageViewArrow: ImageView
+    private lateinit var imageViewArrowClicked: () -> Unit
 
     init {
         if(!isInEditMode) {
@@ -38,12 +40,22 @@ class CustomPostcodeView @JvmOverloads constructor(context: Context, attributeSe
             textInputLayout.error = null
 
             imageViewArrow.setOnClickListener {
-                println("Image has been pressed")
+                if(this::imageViewArrowClicked.isInitialized) {
+                    println("Image has been pressed")
+                    imageViewArrowClicked()
+                }
+                else {
+                    throw IllegalStateException("Click event has not been initialized")
+                }
             }
         }
     }
 
-    fun initializeValidation(@NonNull compositeDisposable: CompositeDisposable, result: (Either<String, String>) -> Unit) {
+    fun setImageListener(action: () -> Unit) {
+        imageViewArrowClicked = action
+    }
+
+    fun initializeValidation(compositeDisposable: CompositeDisposable, result: (Either<String, String>) -> Unit) {
         initValidation()
             .subscribeBy {
                 if(it) {
@@ -68,5 +80,4 @@ class CustomPostcodeView @JvmOverloads constructor(context: Context, attributeSe
         return RxCombineValidator(postcodeValidator)
             .asObservable().`as`(RxJavaBridge.toV3Observable())
     }
-
 }
