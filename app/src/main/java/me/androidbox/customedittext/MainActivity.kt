@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.customPostcode.initializeValidation(compositeDisposable) { postcode ->
+        binding.customPostcode.initializeValidation { postcode ->
             when(postcode) {
                 is Either.Right -> {
                     println("postcode is ${postcode.b}")
